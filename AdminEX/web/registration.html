@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Registration</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin">
+
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">Registration</h1>
+            <img src="images/login-logo.png" alt=""/>
+        </div>
+
+
+        <div class="login-wrap">
+            <p id="checkPerson">Enter your personal details below</p>
+            <input type="text" autofocus="" placeholder="Full Name" class="form-control" id="fullName">
+            <input type="text" autofocus="" placeholder="Address" class="form-control" id="address">
+            <input type="text" autofocus="" placeholder="Email" class="form-control" id="email" onblur="checkEmail(this.value)" onfocus="emailFocus()">
+            <input type="text" autofocus="" placeholder="City/Town" class="form-control" id="city">
+            <div class="radios">
+                <label for="radio-01" class="label_radio col-lg-6 col-sm-6">
+                    <input type="radio" checked="" value="1" id="radio-01" name="sample-radio"> Male
+                </label>
+                <label for="radio-02" class="label_radio col-lg-6 col-sm-6">
+                    <input type="radio" value="0" id="radio-02" name="sample-radio"> Female
+                </label>
+            </div>
+
+            <p id="checkText">Enter your account details below</p>
+            <input type="text" autofocus="" placeholder="User Name" class="form-control" onblur="checkUsername(this.value)" onfocus="getFocus()" id="username">
+            <input type="password" placeholder="Password" class="form-control" id="password" onfocus="pwd1Focus()">
+            <input type="password" placeholder="Re-type Password" class="form-control" id="checkPassword" onblur="checkPwd(this.value)" onfocus="pwdFocus()">
+            <label class="checkbox">
+                <input type="checkbox" value="agree this condition" id="checkbox"> I agree to the Terms of Service and Privacy Policy
+            </label>
+            <button type="button" class="btn btn-lg btn-login btn-block" id="submit" onclick="submitButton()">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <div class="registration">
+                Already Registered.
+                <a href="login.jsp" class="">
+                    Login
+                </a>
+            </div>
+
+        </div>
+    </form>
+
+
+</div>
+
+<script type="text/javascript">
+
+
+    checkEmail = function (value) {
+        var checkPerson = document.getElementById("checkPerson")
+        var emailRegExp = /^\w+((\.\w+){0,3})@\w+(\.\w{2,3}){1,3}$/;
+        var ok = emailRegExp.test(value)
+        if(!ok){
+            checkPerson.style="color:red"
+            checkPerson.innerHTML = "邮箱格式不正确!"
+        }else {
+            checkPerson.style=""
+            checkPerson.innerHTML = "Enter your personal details below"
+        }
+    }
+
+    emailFocus = function () {
+        var email = document.getElementById("email")
+        var checkPerson = document.getElementById("checkPerson")
+
+        if(checkPerson.innerHTML == "邮箱格式不正确!" || checkPerson.innerHTML == "邮箱不能为空！" || checkPerson.innerHTML == "请完善邮箱信息！"){
+            checkPerson.style=""
+            checkPerson.innerHTML = "Enter your personal details below"
+            email.value=""
+        }
+    }
+
+
+    checkUsername = function(username){
+        //alert(username)
+        if(username){
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange  = function(){
+                if(xhr.readyState == 4 ){
+                    if(xhr.status == 200){
+                        //alert(xhr.responseText)
+                        var jsonString = xhr.responseText;
+                        eval("var jsonObj="+jsonString);
+                        //alert(jsonObj.success)
+                        var checkText = document.getElementById("checkText")
+                        if(jsonObj.success){
+                            checkText.style="font-size:16px;color:green"
+                            checkText.innerHTML = "用户名可用！"
+                        }else{
+                            checkText.style="color:red"
+                            checkText.innerHTML = "用户名太受欢迎了！换一个吧"
+                        }
+
+                    }else {
+                        alert(xhr.status)
+                    }
+                }
+            }
+
+            xhr.open("GET","checkregistUsername.do?username="+username,false)
+
+            xhr.send()
+
+        }else{
+            var checkText = document.getElementById("checkText")
+            checkText.style="color:red"
+            checkText.innerHTML = "用户名不能为空！"
+        }
+    }
+
+    getFocus = function(){
+        var checkText = document.getElementById("checkText")
+        var username = document.getElementById("username")
+        if(checkText.innerHTML == "用户名太受欢迎了！换一个吧" || checkText.innerHTML == "用户名不能为空！" || checkText.innerHTML =="用户名和密码不能为空！"){
+
+            checkText.style=""
+            checkText.innerText="Enter your account details below"
+             username.value = ""
+        }
+    }
+
+    pwd1Focus = function () {
+        var checkText = document.getElementById("checkText")
+        if(checkText.innerHTML =="用户名和密码不能为空！" || checkText.innerHTML =="密码不能为空！"){
+            checkText.style=""
+            checkText.innerHTML ="Enter your account details below"
+        }
+    }
+
+    checkPwd = function (value) {
+        var password = document.getElementById("password").value
+        if(value != password){
+            var checkText = document.getElementById("checkText")
+            checkText.style="color:red"
+            checkText.innerHTML = "两次密码不同！"
+        }
+    }
+
+    pwdFocus = function () {
+        var checkText = document.getElementById("checkText")
+        if(checkText.innerHTML == "两次密码不同！"){
+
+            var checkPassword = document.getElementById("checkPassword")
+
+
+            checkText.style= ""
+            checkText.innerHTML = "Enter your account details below"
+
+            checkPassword.value = ""
+        }
+
+    }
+
+    submitButton = function () {
+
+        var fullName = document.getElementById("fullName").value
+        var address = document.getElementById("address").value
+        var email = document.getElementById("email").value
+        var city = document.getElementById("city").value
+        var sexs = document.getElementsByName("sample-radio")
+        var sex
+        if(sexs[0].checked){
+            sex = 1
+        }else{
+            sex = 0
+        }
+        var username = document.getElementById("username").value
+        var password = document.getElementById("password").value
+        //alert(sex)
+        var checkText = document.getElementById("checkText")
+        var checkPerson = document.getElementById("checkPerson")
+        //alert(checkPerson.innerHTML == "Enter your personal details below")
+        //alert(checkText.innerHTML == "Enter your account details below")
+
+        var checkbox = document.getElementById("checkbox")
+        //alert(checkbox.checked)
+        if(checkbox.checked){
+            if(checkPerson.innerHTML == "Enter your personal details below" && (checkText.innerHTML == "用户名可用！" || checkText.innerHTML =="Enter your account details below")){
+                if(email != ""){
+                    if(username != ""){
+                        if(password != ""){
+                            var xhr = new XMLHttpRequest()
+
+                            xhr.onreadystatechange = function () {
+                                if(xhr.readyState == 4){
+                                    if(xhr.status == 200){
+                                        eval("var jsonObj ="+xhr.responseText)
+                                        if(jsonObj.success){
+                                            alert("注册成功！")
+                                            window.location="/islogin.do"
+                                        }else{
+                                            alert("注册失败！")
+                                        }
+
+                                    }else{
+                                        alert(xhr.status)
+                                    }
+
+                                }
+                            }
+
+                            xhr.open("GET","register.do?fullName="+fullName+"&address="+address+"&email="+email+"&city="+city+"&sex="+sex+"&username="+username+"&password="+password,false)
+
+                            xhr.send();
+                        }else{
+                            checkText.style="color:red"
+                            checkText.innerHTML = "密码不能为空！"
+
+                        }
+                    }else{
+                        if(password == ""){
+                            checkText.style="color:red"
+                            checkText.innerHTML = "用户名和密码不能为空！"
+
+                        }else{
+                            checkText.style="color:red"
+                            checkText.innerHTML = "用户名不能为空！"
+                        }
+                    }
+                }else{
+                    checkPerson.style="color:red"
+                    checkPerson.innerText = "邮箱不能为空！"
+                    if( username == ""){
+                        if(password == ""){
+                            checkText.style="color:red"
+                            checkText.innerHTML = "用户名和密码不能为空！"
+                        }else{
+                            checkText.style="color:red"
+                            checkText.innerHTML = "用户名不能为空！"
+                        }
+
+                    }else{
+                        if(password == ""){
+                            checkText.style="color:red"
+                            checkText.innerHTML = "密码不能为空！"
+                        }
+                    }
+                }
+
+
+
+            }else {
+
+                if(checkPerson.innerHTML != "Enter your personal details below"){
+                    checkPerson.style="color:red"
+                    checkPerson.innerText = "请完善邮箱信息！"
+                }
+
+            }
+        }else{
+            alert("Oooooops!点击同意才能注册哦！")
+        }
+
+
+
+    }
+
+</script>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+
+</body>
+</html>

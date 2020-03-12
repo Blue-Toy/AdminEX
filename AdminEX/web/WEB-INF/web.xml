@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+           version="3.0">
+    <welcome-file-list>
+        <welcome-file>islogin.do</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <servlet-name>loginControl</servlet-name>
+        <servlet-class>Controller.ServletLoginCheck</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginControl</servlet-name>
+        <url-pattern>/loginCheck.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>islogin</servlet-name>
+        <servlet-class>Controller.ServletIsLogin</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>islogin</servlet-name>
+        <url-pattern>/islogin.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>showlist</servlet-name>
+        <servlet-class>Controller.ServletShowList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>showlist</servlet-name>
+        <url-pattern>/showlist.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+    <servlet-name>savedata</servlet-name>
+    <servlet-class>Controller.ServletSaveData</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>savedata</servlet-name>
+        <url-pattern>/savedata.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteData</servlet-name>
+        <servlet-class>Controller.ServletDeleteData</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteData</servlet-name>
+        <url-pattern>/deleteData.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>checkUsername</servlet-name>
+        <servlet-class>Controller.ServletCheckRegisterUsername</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>checkUsername</servlet-name>
+        <url-pattern>/checkregistUsername.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>register</servlet-name>
+        <servlet-class>Controller.ServletRegister</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>register</servlet-name>
+        <url-pattern>/register.do</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>filterSession</filter-name>
+        <filter-class>Filter.FilterSession</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>filterSession</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>Listener.ListenerContext</listener-class>
+    </listener>
+
+</web-app>
